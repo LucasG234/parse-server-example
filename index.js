@@ -43,12 +43,12 @@ var api = new ParseServer({
   databaseURI: databaseUri || 'mongodb://localhost:27017/dev',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   appId: process.env.APP_ID || 'myAppId',
-  masterKey: process.env.MASTER_KEY || '', //Add your master key here. Keep it secret!
+  masterKey: process.env.MASTER_KEY || '123', //Add your master key here. Keep it secret!
   push: pushConfig,
   filesAdapter: filesAdapter,
   liveQuery: { classNames: ["Message"]},
-  publicServerURL: process.env.SERVER_URL || 'http://localhost/parse',
-  serverURL: process.env.SERVER_URL || 'http://localhost/parse'  // needed for Parse Cloud and push notifications
+  publicServerURL: process.env.SERVER_URL || 'http://localhost:1337/parse',
+  serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse'  // needed for Parse Cloud and push notifications
 });
 // Client-keys like the javascript key or the .NET key are not necessary with parse-server
 // If you wish you require them, you can set them as options in the initialization above:
@@ -68,7 +68,7 @@ app.get('/', function(req, res) {
   res.status(200).send('I dream of being a website.  Please star the parse-server repo on GitHub!');
 });
 
-var port = process.env.PORT || 1337;
+var port = process.env.PORT || 4040;
 var httpServer = require('http').createServer(app);
 httpServer.listen(port, function() {
     console.log('parse-server-example running on port ' + port + '.');
