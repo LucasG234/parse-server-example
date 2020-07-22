@@ -1,3 +1,4 @@
+// This job is used to clear old posts from the database
 Parse.Cloud.job("clean-old", async (request) => {
     // params: passed in the job call
     // headers: from the request that triggered the job
@@ -22,4 +23,16 @@ Parse.Cloud.job("clean-old", async (request) => {
     }
 
     return "Number found: " + results.length;
+});
+
+
+// This function returns whether the provided Post is liked by the provided User
+Parse.Cloud.define("getUserLikes", async (request) => { 
+    const { params, headers, log, message } = request;
+    const Post = Parse.Object.extend("Post");
+    const query = new Parse.Query(Post);
+    query.equalTo("objectId", request.params.Post);
+    const requestedPost = await query.first();
+
+    return requestedPost;
 });
