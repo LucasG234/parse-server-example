@@ -29,10 +29,16 @@ Parse.Cloud.job("clean-old", async (request) => {
 // This function returns whether the provided Post is liked by the provided User
 Parse.Cloud.define("getUserLikes", async (request) => { 
     const { params, headers, log, message } = request;
+    
     const Post = Parse.Object.extend("Post");
-    const query = new Parse.Query(Post);
-    query.equalTo("objectId", request.params.Post);
-    const requestedPost = await query.first();
+    const postQuery = new Parse.Query(Post);
+    postQuery.equalTo("objectId", request.params.Post);
+    const requestedPost = await postQuery.first();
+    
+    const likedBy = requestedPost.relation("likedBy");
+    const likedQuery = likedBy.query();
+    likedQuery.equalTo("objectId", request.params.User);
+    const count = await likedQuery.count();
 
-    return requestedPost;
+    return count > 0;
 });
